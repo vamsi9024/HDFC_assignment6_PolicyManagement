@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         PolicyServices service = PolicyServices.getInstance();
 
-        // === Register policy types with the factory ===
+
         PolicyFactory.register("LIFE", (id, premium, term) -> new LifeInsurancePolicy(id, premium, term));
         PolicyFactory.register("HEALTH", (id, premium, term) -> new HealthInsurancePolicy(id, premium, term));
 
@@ -24,7 +24,7 @@ public class Main {
 //        PolicyFactory.register("health", HealthInsurancePolicy::new);
 //        PolicyFactory.register("term", TermInsurancePolicy::new);
 
-        // === Add Customers ===
+
         Customer c1 = new Customer("C001", "Alice", 30);
         Customer c2 = new Customer("C002", "Bob", 45);
         Customer c3 = new Customer("C003", "Charlie", 28);
@@ -33,31 +33,31 @@ public class Main {
         service.addCustomer(c2);
         service.addCustomer(c3);
 
-        // === Add Policies via Factory ===
+
         service.addPolicy("C001", PolicyFactory.createPolicy("LIFE", "P001", 5000, 10));
         service.addPolicy("C001", PolicyFactory.createPolicy("HEALTH", "P002", 3000, 5));
         service.addPolicy("C002", PolicyFactory.createPolicy("LIFE", "P003", 7000, 15));
         service.addPolicy("C003", PolicyFactory.createPolicy("HEALTH", "P004", 2000, 7));
 
-        // === List All Customers and Their Policies ===
+
         System.out.println("\n--- All Customers and Policies ---");
         printAllCustomers(service);
 
-//        // === Calculate Total Maturity for a Customer ===
+//
         System.out.println("\n--- Total Maturity for C001 ---");
         double maturity = service.calcuateTotalMaturity("C001");
         System.out.println("Total Maturity Amount: " + maturity);
 
-        // === Remove a Policy from a Customer ===
+
         System.out.println("\n--- Removing Policy P002 from C001 ---");
         service.removePolicy("C001", "P002");
         service.printCustomerDetails("C001");
 
-        // === Remove a Customer ===
+
         System.out.println("\n--- Removing Customer C003 ---");
         service.removeCustomer("C003");
 
-        // === Display Customers Sorted by Name (TreeMap) ===
+
         System.out.println("\n--- Customers Sorted by Name ---");
         TreeMap<String, Customer> sortedByName = new TreeMap<>();
         for (Customer cust : getAllCustomers(service)) {
@@ -67,7 +67,7 @@ public class Main {
             System.out.println("Name: " + entry.getKey() + ", ID: " + entry.getValue().getCustomerId());
         }
 
-        // === Display Policies Sorted by Premium Amount (Custom Comparator) ===
+
         System.out.println("\n--- All Policies Sorted by Premium Amount ---");
         List<Policy> allPolicies = getAllCustomers(service).stream()
                 .flatMap(cust -> cust.getPolicies().values().stream())
@@ -79,7 +79,7 @@ public class Main {
                     ", Premium: " + policy.getPremiumAmount());
         }
 
-        // === Iterate over Policies Using keySet() ===
+
         System.out.println("\n--- Iterate Using keySet() ---");
         Customer customer = service.getCustomer("C001");
         if (customer != null) {
@@ -88,7 +88,7 @@ public class Main {
             }
         }
 
-        // === Iterate over Policies Using entrySet() ===
+
         System.out.println("\n--- Iterate Using entrySet() ---");
         if (customer != null) {
             for (Map.Entry<String, Policy> entry : customer.getPolicies().entrySet()) {
@@ -97,7 +97,7 @@ public class Main {
             }
         }
 
-        // === Iterate over Policies Using forEach() ===
+
         System.out.println("\n--- Iterate Using forEach() ---");
         if (customer != null) {
             customer.getPolicies().forEach((id, pol) ->
@@ -105,14 +105,14 @@ public class Main {
         }
     }
 
-    // Helper to print all customers
+
     private static void printAllCustomers(PolicyServices service) {
         for (Customer cust : getAllCustomers(service)) {
             service.printCustomerDetails(cust.getCustomerId());
         }
     }
 
-    // Helper to retrieve all customers using reflection (since customerMap is private)
+
     private static Collection<Customer> getAllCustomers(PolicyServices service) {
         try {
             java.lang.reflect.Field field = PolicyServices.class.getDeclaredField("customerMap");
