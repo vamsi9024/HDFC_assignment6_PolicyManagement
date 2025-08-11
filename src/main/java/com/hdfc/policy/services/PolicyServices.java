@@ -4,15 +4,17 @@ import com.hdfc.policy.models.Customer;
 import com.hdfc.policy.models.Policy;
 import com.hdfc.policy.repository.Repository;
 
+import java.util.Collection;
+
 public class PolicyServices {
 
-    private Repository<Customer, String> customerRepo;
+    private Repository<String, Customer> customerRepo;
 
     // Creating Singleton class
     private static PolicyServices INSTANCE;
 
     public PolicyServices() {
-        this.customerRepo = customerRepo;
+        this.customerRepo = new Repository<>();;
     }
 
     // Checking Singleton
@@ -106,6 +108,10 @@ public class PolicyServices {
                     ", Term: " + policy.getTermYears() +
                     ", Maturity: " + policy.calculateMaturityAmount());
         });
+    }
+
+    public Collection<Customer> getAllCustomers() {
+        return customerRepo.getStorage().values();
     }
 
 }

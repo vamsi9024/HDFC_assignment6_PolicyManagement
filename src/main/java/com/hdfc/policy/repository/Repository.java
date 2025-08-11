@@ -2,7 +2,7 @@ package com.hdfc.policy.repository;
 
 import java.util.*;
 
-public class Repository <T ,ID> {
+public class Repository <ID,T> {
 
     private Map<ID , T> storage = new HashMap<ID, T>();
 
